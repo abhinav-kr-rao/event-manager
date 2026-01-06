@@ -1,12 +1,19 @@
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
 import { attendeeSchema } from "@/lib/schema";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request, { params }: { params: { id: string } }) {
     try {
+
+        const paramData = await params;
+        console.log('the param data is', paramData);
+
+
         const body = await req.json();
         const { name, email } = attendeeSchema.parse(body);
-        const eventId = params.id;
+        const eventId = paramData.id;
+
+        console.log('event is ', eventId);
 
         // Transaction: Check capacity -> Register
         const result = await prisma.$transaction(async (tx) => {
@@ -28,6 +35,9 @@ export async function POST(req: Request, { params }: { params: { id: string } })
 
         return NextResponse.json(result);
     } catch (error: any) {
+        console.log('error registering attendee');
+        console.log(error);
+
         if (error.message === "Event is full") {
             return NextResponse.json({ error: "Event is full" }, { status: 409 });
         }
