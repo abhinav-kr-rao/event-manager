@@ -26,7 +26,7 @@ export function RegisterAttendeeForm({ eventId, isFull }: { eventId: string, isF
         mutationFn: (data: z.infer<typeof attendeeSchema>) => axios.post(`/api/events/${eventId}/register`, data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["events"] });
-            toast.success("Registered! See you there.");
+            toast.success("Registered successfully.");
             setOpen(false);
             form.reset();
         },

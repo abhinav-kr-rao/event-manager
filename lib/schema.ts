@@ -12,7 +12,6 @@ export const eventFormInputSchema = z.object({
   description: z.string().optional(),
 });
 
-// Output schema for API (capacity as number)
 export const eventFormSchema = z.object({
   title: z.string().min(2, "Title is required"),
   date: z
@@ -28,7 +27,7 @@ export const attendeeSchema = z.object({
   email: z.string().min(1, "Email is required"),
 });
 
-// Type for Event with attendee count (from API)
+// Type for Event with attendee count
 export type EventWithCount = {
   id: string;
   title: string;

@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-// import { Badge } from "@/components/ui/badge";
 import { RegisterAttendeeForm } from "./RegisterForm";
 import { EventWithCount } from "@/lib/schema";
 
@@ -11,7 +10,6 @@ export function EventCard({ event }: { event: EventWithCount }) {
             <CardHeader>
                 <div className="flex justify-between items-start">
                     <CardTitle>{event.title}</CardTitle>
-                    {/* {isFull && <Badge variant="destructive">Sold Out</Badge>} */}
                 </div>
                 <CardDescription>{new Date(event.date).toLocaleDateString()}</CardDescription>
             </CardHeader>
@@ -20,7 +18,6 @@ export function EventCard({ event }: { event: EventWithCount }) {
                 <div className="text-sm font-medium">
                     Attendees: {event._count.attendees} / {event.capacity}
                 </div>
-                {/* Progress bar visual could go here */}
             </CardContent>
             <CardFooter>
                 <RegisterAttendeeForm eventId={event.id} isFull={isFull} />
