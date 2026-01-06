@@ -1,12 +1,13 @@
-import prisma from "@/lib/prisma";
+import { prismaNonPooled } from "@/lib/prisma";
 import { attendeeSchema } from "@/lib/schema";
 import { NextResponse } from "next/server";
+
 
 export async function POST(req: Request, { params }: { params: { id: string } }) {
     try {
 
         const paramData = await params;
-        console.log('the param data is', paramData);
+        // console.log('the param data is', paramData);
 
 
         const body = await req.json();
@@ -16,7 +17,10 @@ export async function POST(req: Request, { params }: { params: { id: string } })
         console.log('event is ', eventId);
 
         // Transaction: Check capacity -> Register
-        const result = await prisma.$transaction(async (tx) => {
+        const result = await prismaNonPooled.$transaction(async (tx) => {
+            // console.log('prining transaction client ');
+            // console.log(tx);
+
             const event = await tx.event.findUnique({
                 where: { id: eventId },
                 include: { _count: { select: { attendees: true } } }
