@@ -4,11 +4,12 @@ import axios from "axios";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EventCard } from "@/components/EventCard";
 import { CreateEventForm } from "@/components/CreateEventForm";
+import { EventWithCount } from "@/lib/schema";
 
 export default function Home() {
   const { data: events, isLoading } = useQuery({
     queryKey: ["events"],
-    queryFn: async () => (await axios.get("/api/events")).data,
+    queryFn: async () => (await axios.get<EventWithCount[]>("/api/events")).data,
   });
 
   return (
@@ -26,7 +27,7 @@ export default function Home() {
         <div className="text-center text-gray-500 mt-20">No events found. Create one!</div>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {events.map((event: any) => (
+          {events?.map((event) => (
             <EventCard key={event.id} event={event} />
           ))}
         </div>

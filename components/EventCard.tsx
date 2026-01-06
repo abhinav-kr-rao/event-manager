@@ -1,8 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 // import { Badge } from "@/components/ui/badge";
 import { RegisterAttendeeForm } from "./RegisterForm";
+import { EventWithCount } from "@/lib/schema";
 
-export function EventCard({ event }: { event: any }) {
+export function EventCard({ event }: { event: EventWithCount }) {
     const isFull = event._count.attendees >= event.capacity;
 
     return (

@@ -14,3 +14,16 @@ export const attendeeSchema = z.object({
   name: z.string().min(2, "Name is required"),
   email: z.string().min(1, "Email is required"),
 });
+
+// Type for Event with attendee count (from API)
+export type EventWithCount = {
+  id: string;
+  title: string;
+  date: string | Date;
+  description: string;
+  capacity: number;
+  createdAt: string | Date;
+  _count: {
+    attendees: number;
+  };
+};

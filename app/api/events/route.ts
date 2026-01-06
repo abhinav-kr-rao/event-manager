@@ -31,7 +31,7 @@ export async function POST(req: Request) {
             },
         });
         return NextResponse.json(event);
-    } catch (error) {
+    } catch (error: unknown) {
         console.log('error showing events');
         console.log(error);
 
