@@ -14,7 +14,7 @@ export async function POST(req: Request, { params }: { params: { id: string } })
         const { name, email } = attendeeSchema.parse(body);
         const eventId = paramData.id;
 
-        console.log('event is ', eventId);
+        // console.log('event is ', eventId);
 
         // Transaction: Check capacity -> Register
         const result = await prismaNonPooled.$transaction(async (tx) => {
