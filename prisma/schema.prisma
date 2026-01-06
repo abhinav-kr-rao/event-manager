@@ -14,18 +14,21 @@ datasource db {
 }
 
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
+model Event {
+  id          String     @id @default(cuid())
+  title       String
+  date        DateTime
+  description String
+  capacity    Int
+  attendees   Attendee[]
+  createdAt   DateTime   @default(now())
 }
 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  authorId  Int
-  author    User    @relation(fields: [authorId], references: [id])
+model Attendee {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  @@unique([email, eventId]) // Prevent double booking
 }

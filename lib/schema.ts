@@ -8,3 +8,9 @@ export const eventFormSchema = z.object({
   capacity: z.coerce.number().min(1, "Capacity must be at least 1"),
   description: z.string().optional(),
 });
+
+
+export const attendeeSchema = z.object({
+  name: z.string().min(2, "Name is required"),
+  email: z.string().min(1, "Email is required"),
+});
