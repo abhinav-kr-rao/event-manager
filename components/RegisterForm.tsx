@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { attendeeSchema } from "@/lib/schema";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -11,11 +11,11 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 import { useState } from "react";
 
 export function RegisterAttendeeForm({ eventId, isFull }: { eventId: string, isFull: boolean }) {
     const [open, setOpen] = useState(false);
-    // const { toast } = useToast();
     const queryClient = useQueryClient();
 
     const form = useForm<z.infer<typeof attendeeSchema>>({
@@ -23,18 +23,16 @@ export function RegisterAttendeeForm({ eventId, isFull }: { eventId: string, isF
     });
 
     const mutation = useMutation({
-        mutationFn: (data: any) => axios.post(`/api/events/${eventId}/register`, data),
+        mutationFn: (data: z.infer<typeof attendeeSchema>) => axios.post(`/api/events/${eventId}/register`, data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["events"] });
-            // toast({ title: "Registered!", description: "See you there." });
+            toast.success("Registered! See you there.");
             setOpen(false);
             form.reset();
         },
-        onError: (error: any) => {
-            const msg = error.response?.data?.error || "Registration failed";
-            console.log(msg);
-
-            // toast({ variant: "destructive", title: "Error", description: msg });
+        onError: (error: AxiosError<{ error?: string }>) => {
+            const msg = error?.response?.data?.error || "Registration failed";
+            toast.error(msg);
         },
     });
 

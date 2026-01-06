@@ -10,29 +10,35 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-// import { useToast } from "@/hooks/use-toast"; // Shadcn toast hook
+import { toast } from "sonner";
 import { useState } from "react";
-import { eventFormSchema } from "@/lib/schema";
+import { eventFormInputSchema, eventFormSchema } from "@/lib/schema";
 
 export function CreateEventForm() {
     const [open, setOpen] = useState(false);
-    // const { toast } = useToast();
     const queryClient = useQueryClient();
 
-    const form = useForm<z.infer<typeof eventFormSchema>>({
-        resolver: zodResolver(eventFormSchema),
+    const form = useForm<z.infer<typeof eventFormInputSchema>>({
+        resolver: zodResolver(eventFormInputSchema),
     });
 
     const mutation = useMutation({
-        mutationFn: (data: any) => axios.post("/api/events", data),
+        mutationFn: (data: z.infer<typeof eventFormInputSchema>) => {
+            // Convert capacity string to number for API
+            const apiData = eventFormSchema.parse({
+                ...data,
+                capacity: parseInt(data.capacity, 10),
+            });
+            return axios.post("/api/events", apiData);
+        },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["events"] });
-            // toast({ title: "Success", description: "Event created successfully!" });
+            toast.success("Event created successfully!");
             setOpen(false);
             form.reset();
         },
         onError: () => {
-            // toast({ variant: "destructive", title: "Error", description: "Failed to create event." });
+            toast.error("Failed to create event.");
         },
     });
 
