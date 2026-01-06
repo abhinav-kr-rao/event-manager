@@ -1,7 +1,8 @@
 # Event Manager
 
-An event management application built with Next.js, Prisma, and PostgreSQL. Create events, manage capacity, and register attendees with real-time updates.
+**Live URL:** [https://event-manager-omega-gold.vercel.app/](https://event-manager-omega-gold.vercel.app/)
 
+An event management application built with Next.js, Prisma, and PostgreSQL. Create events, manage capacity, and register attendees with real-time updates.
 
 ## Tech Stack
 
@@ -15,7 +16,7 @@ An event management application built with Next.js, Prisma, and PostgreSQL. Crea
 
 ## Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
 - PostgreSQL database (Neon recommended)
 
