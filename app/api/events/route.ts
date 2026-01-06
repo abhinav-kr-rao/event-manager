@@ -17,9 +17,9 @@ export async function POST(req: Request) {
         const body = await req.json();
         const validatedData = eventFormSchema.parse(body);
 
-        console.log('the body is', body);
+        // console.log('the body is', body);
 
-        console.log('the validated data is', validatedData);
+        // console.log('the validated data is', validatedData);
 
 
         // Convert string date to Date object for Prisma

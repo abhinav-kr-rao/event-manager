@@ -3,7 +3,7 @@ import { attendeeSchema } from "@/lib/schema";
 import { NextResponse } from "next/server";
 
 
-export async function POST(req: Request, { params }: { params: { id: string } }) {
+export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
 
         const paramData = await params;
@@ -38,15 +38,15 @@ export async function POST(req: Request, { params }: { params: { id: string } })
         });
 
         return NextResponse.json(result);
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.log('error registering attendee');
         console.log(error);
 
-        if (error.message === "Event is full") {
+        if (error instanceof Error && error.message === "Event is full") {
             return NextResponse.json({ error: "Event is full" }, { status: 409 });
         }
         // Handle unique constraint (P2002) for duplicate email
-        if (error.code === 'P2002') {
+        if (error && typeof error === 'object' && 'code' in error && error.code === 'P2002') {
             return NextResponse.json({ error: "You are already registered" }, { status: 400 });
         }
         return NextResponse.json({ error: "Registration failed" }, { status: 500 });
